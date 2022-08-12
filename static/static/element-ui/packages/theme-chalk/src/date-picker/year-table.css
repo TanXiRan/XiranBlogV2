@@ -1,0 +1,64 @@
+/* Error: Undefined mixin.
+ *    ,
+ * 3  | / @include b(year-table) {
+ * 4  | |   font-size: 12px;
+ * 5  | |   margin: -1px;
+ * 6  | |   border-collapse: collapse;
+ * 7  | | 
+ * 8  | |   .el-icon {
+ * 9  | |     color: $--datepicker-icon-color;
+ * 10 | |   }
+ * 11 | | 
+ * 12 | |   td {
+ * 13 | |     text-align: center;
+ * 14 | |     padding: 20px 3px;
+ * 15 | |     cursor: pointer;
+ * 16 | | 
+ * 17 | |     &.today {
+ * 18 | |       .cell {
+ * 19 | |         color: $--color-primary;
+ * 20 | |         font-weight: bold;
+ * 21 | |       }
+ * 22 | |     }
+ * 23 | | 
+ * 24 | |     &.disabled .cell {
+ * 25 | |       background-color: $--background-color-base;
+ * 26 | |       cursor: not-allowed;
+ * 27 | |       color: $--color-text-placeholder;
+ * 28 | | 
+ * 29 | |       &:hover {
+ * 30 | |         color: $--color-text-placeholder;
+ * 31 | |       }
+ * 32 | |     }
+ * 33 | | 
+ * 34 | |     .cell {
+ * 35 | |       width: 48px;
+ * 36 | |       height: 32px;
+ * 37 | |       display: block;
+ * 38 | |       line-height: 32px;
+ * 39 | |       color: $--datepicker-font-color;
+ * 40 | |       margin: 0 auto;
+ * 41 | | 
+ * 42 | |       &:hover {
+ * 43 | |         color: $--datepicker-hover-font-color;
+ * 44 | |       }
+ * 45 | |     }
+ * 46 | | 
+ * 47 | |     &.current:not(.disabled) .cell {
+ * 48 | |       color: $--datepicker-active-color;
+ * 49 | |     }
+ * 50 | |   }
+ * 51 | \ }
+ *    '
+ *   year-table.scss 3:1  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined mixin.\a    \2577 \a 3  \2502  \250c  @include b(year-table) {\a 4  \2502  \2502    font-size: 12px;\a 5  \2502  \2502    margin: -1px;\a 6  \2502  \2502    border-collapse: collapse;\a 7  \2502  \2502  \a 8  \2502  \2502    .el-icon {\a 9  \2502  \2502      color: $--datepicker-icon-color;\a 10 \2502  \2502    }\a 11 \2502  \2502  \a 12 \2502  \2502    td {\a 13 \2502  \2502      text-align: center;\a 14 \2502  \2502      padding: 20px 3px;\a 15 \2502  \2502      cursor: pointer;\a 16 \2502  \2502  \a 17 \2502  \2502      &.today {\a 18 \2502  \2502        .cell {\a 19 \2502  \2502          color: $--color-primary;\a 20 \2502  \2502          font-weight: bold;\a 21 \2502  \2502        }\a 22 \2502  \2502      }\a 23 \2502  \2502  \a 24 \2502  \2502      &.disabled .cell {\a 25 \2502  \2502        background-color: $--background-color-base;\a 26 \2502  \2502        cursor: not-allowed;\a 27 \2502  \2502        color: $--color-text-placeholder;\a 28 \2502  \2502  \a 29 \2502  \2502        &:hover {\a 30 \2502  \2502          color: $--color-text-placeholder;\a 31 \2502  \2502        }\a 32 \2502  \2502      }\a 33 \2502  \2502  \a 34 \2502  \2502      .cell {\a 35 \2502  \2502        width: 48px;\a 36 \2502  \2502        height: 32px;\a 37 \2502  \2502        display: block;\a 38 \2502  \2502        line-height: 32px;\a 39 \2502  \2502        color: $--datepicker-font-color;\a 40 \2502  \2502        margin: 0 auto;\a 41 \2502  \2502  \a 42 \2502  \2502        &:hover {\a 43 \2502  \2502          color: $--datepicker-hover-font-color;\a 44 \2502  \2502        }\a 45 \2502  \2502      }\a 46 \2502  \2502  \a 47 \2502  \2502      &.current:not(.disabled) .cell {\a 48 \2502  \2502        color: $--datepicker-active-color;\a 49 \2502  \2502      }\a 50 \2502  \2502    }\a 51 \2502  \2514  }\a    \2575 \a   year-table.scss 3:1  root stylesheet";
+}

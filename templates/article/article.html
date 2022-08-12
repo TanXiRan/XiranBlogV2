@@ -1,0 +1,172 @@
+{% extends 'index/index.html' %}
+{% load my_filter %}
+{% load my_tag %}
+{% block title %}
+    <title>{{ article_.title }}</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/article.css">
+    <link rel="stylesheet" href="/static/viewer/css/viewer.css">
+{% endblock %}
+
+{% block banner %}
+    {% banner 'article' article_ request %}
+{% endblock %}
+
+{% block main %}
+    <div class="main-content flexing">
+        <div class="catalogue-recommendation">
+            <div class="cat_rec_boxer">
+                <div class="catalogue">
+                    <div class="display-catalogue flexing" ref="switch_button">
+                        <p>[[ switch_button_text ]]</p>
+                        <el-switch
+                                v-model="display_catalogue"
+                                active-color="#ff4949"
+                                inactive-color="#13ce66"
+                                @change="chang_display_catalogue">
+                        </el-switch>
+                    </div>
+                    <div class="catalogue-body">
+                        <ul>
+                            <li v-for="(item, index) in catalogue_content" :key="index" :class="item.tagName"
+                                @click="go_to_section(item.top, $event)">
+                                [[ item.text ]]
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% if recommendation %}
+                    <div class="article-recommendation">
+                        <p>文章推荐</p>
+                        <ul>
+                            {% for r in recommendation %}
+                                <div>
+                                    <a href="/blog/article/{{ r.id }}/" target="_blank">
+                                        <li class="recommended flexing">
+                                            <div class="rec-cover">
+                                                <img src="{{ r.cover.url }}" alt="">
+                                            </div>
+                                            <div class="rec_info">
+                                                <p class="r-title">{{ r.title }}</p>
+                                                <p class="rec-release-date">{{ r.release_date|format_create_date }}</p>
+                                            </div>
+                                        </li>
+                                    </a>
+                                </div>
+
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="middle">
+            <div class="article">
+                <div class="content" id="unique_content_id">
+                    <textarea>{{ article_.content }}</textarea>
+                </div>
+                <div class="pre-next flexing">
+                    {% if pre_art %}
+                        <a href="/blog/article/{{ pre_art.id }}/">
+                            <div>上一篇 - {{ pre_art.title }}</div>
+                        </a>
+                    {% endif %}
+                    {% if next_art %}
+                        <a href="/blog/article/{{ next_art.id }}/">
+                            <div>下一篇 - {{ next_art.title }}</div>
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="mobile-actions flexing">
+                    <div class="like-article" @click="like_article('{{ article_.id }}')">
+                        <img src="/static/img/icon-4.svg" alt="喜欢文章">
+                    </div>
+                    <div class="share-article" @click="share_article($event)">
+                        <img src="/static/img/fenxiang-3.svg" alt="点击立即分享">
+                    </div>
+                    <div class="back-to-top"><img src="/static/img/arrowup.svg" alt="回到顶部" @click="back_to_top"></div>
+
+                </div>
+            </div>
+            <div class="comment-textarea">
+                <div>
+                    <textarea placeholder="登录后才能评论哦！" v-model="content" ref="content"
+                              rows="8"></textarea>
+                </div>
+                <div class="submit-comment">
+                    <button type="submit" @click="send_comment($event,'{{ article_.id }}')">发送</button>
+                </div>
+            </div>
+            <div class="comment_list">
+                <div class="comment_num">共{{ comments.count }}条评论，{{ users|length }}人参与</div>
+                <div class="comment-list">
+                    <ul>
+                        {% for comment in comments %}
+                            <li class="flexing" id="comm_{{ comment.id }}">
+                                <div class="left">
+                                    <img src="{{ comment.user.avatar.path.url }}">
+                                </div>
+                                <div class="right">
+                                    <div class="user-date flexing">
+                                        <p class="comment-user">{{ comment.user.username }}</p>
+                                        <p class="comment-date">{{ comment.create_time|format_create_date }}</p>
+                                    </div>
+                                    <div class="comment_content">
+                                        <p>{{ comment.content }}</p>
+                                    </div>
+                                    <div class="comment_info flexing">
+                                        <div class="like-comment" @click="like_comment($event,'{{ comment.id }}')">
+                                            <img src="/static/img/icon-4.svg" alt=""><span>{{ comment.like_num }}</span>
+                                        </div>
+                                        {% if request.user.username == comment.user.username or request.user.is_superuser %}
+                                            <div class="delete-comment"
+                                                 style="color: red"
+                                                 @click="delete_comment($event,'{{ comment.id }}', '{{ article_.id }}')">
+                                                <img
+                                                        src="/static/img/icon-4.svg" alt="">
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="sidebar-actions">
+                <div class="like-article" @click="like_article('{{ article_.id }}')">
+                    <img src="/static/img/icon-4.svg" alt="喜欢文章">
+                </div>
+                <div class="comment-article" @click="go_to_comment($event)">
+                    <img src="/static/img/pinglun.svg" alt="评论文章">
+                </div>
+                <div class="share-article" @click="share_article($event)">
+                    <img src="/static/img/fenxiang-3.svg" alt="点击立即分享">
+                </div>
+                <div class="back-to-top"><img src="/static/img/arrowup.svg" alt="回到顶部" @click="back_to_top"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block editor_js %}
+    <script src="/static/viewer/js/viewer.js"></script>
+    <script>
+        $(function () {
+            let editor = editormd.markdownToHTML("unique_content_id", {
+                width: "100%",
+                height: "100%",
+                path: "/static/editor-md/lib/",
+            })
+
+            $('#unique_content_id > p').viewer()
+        })
+    </script>
+{% endblock %}
+
+{% block banner_js %}
+
+{% endblock %}

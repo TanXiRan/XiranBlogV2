@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load my_tag %}
+{% load my_filter %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    {% block title %}
+        <title>西然博客2.0</title>
+    {% endblock %}
+    {% block css %}
+        <link rel="stylesheet" href="/static/css/index.css">
+    {% endblock %}
+    {% block public %}
+        <link rel="stylesheet" href="/static/css/public.css">
+    {% endblock %}
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/devices_adaption/laptop.css">
+    <link rel="stylesheet" href="/static/css/devices_adaption/mobile.css">
+    <link rel="stylesheet" href="/static/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="/static/fontawesome/css/all.css">
+    <link rel="stylesheet" href="/static/editor-md/css/editormd.css">
+</head>
+<body>
+<div id="app">
+    <link rel="stylesheet" :href="'/static/css/theme/' + theme + '.css'">
+    <el-scrollbar ref="scrollbar" style="height: 100vh">
+        <el-drawer
+                title="我是标题"
+                :modal="false"
+                size="40%"
+                custom-class="aside_nav_class"
+                :with-header="false"
+                @open="mobile_side_open"
+                @close="mobile_side_close"
+                :visible.sync="mobile_side_drawer"
+                :direction="mobile_side_direction">
+            <div class="aside-content">
+                <div class="author-card_aside">
+                    <div class="author-avatar flexing">
+                        <img src="/static/img/author-card/tmpp91s8163.JPG" alt="">
+                    </div>
+                    <p class="authorName">西然</p>
+                    <p class="abstract">这是西然博客2.0！我是作者</p>
+                    <div class="contact-author flexing">
+                        <div><img src="/static/img/author-card/mail.svg" alt="" class="svg">
+                            <img src="/static/img/author-card/img.png" alt="" class="hidden">
+                        </div>
+                        <div><img src="/static/img/author-card/weixindenglu.svg" alt="" class="svg">
+                            <img src="/static/img/author-card/weixin_code.png" alt="" class="hidden">
+                        </div>
+                        <div><a href="https://space.bilibili.com/104125813?spm_id_from=333.1007.0.0"
+                                target="_blank"><img src="/static/img/author-card/bilibili.svg" alt=""
+                                                     class="svg"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="aside-nav flexing">
+                    <a href="/blog/" class="{{ request.path_info|locate_nav:'' }}">首页</a>
+                    <a href="/blog/learning/" class="{{ request.path_info|locate_nav:'learning' }}">学习分享</a>
+                    <a href="/blog/dailylife/" class="{{ request.path_info|locate_nav:'dailylife' }}">生活日常</a>
+                    <a href="/blog/recommendations/"
+                       class="{{ request.path_info|locate_nav:'recommendations' }}">好物推荐</a>
+                    <a href="/blog/about/" class="{{ request.path_info|locate_nav:'about' }}">关于网站</a>
+                </div>
+            </div>
+
+        </el-drawer>
+        <nav class="navigator flexing">
+            <div class="nav-left flexing">
+
+                <div>
+                    <a href="/blog/" class="{{ request.path_info|locate_nav:'' }}">首页</a>
+                    <a href="/blog/learning/" class="{{ request.path_info|locate_nav:'learning' }}">学习分享</a>
+                    <a href="/blog/dailylife/" class="{{ request.path_info|locate_nav:'dailylife' }}">生活日常</a>
+                    <a href="/blog/recommendations/"
+                       class="{{ request.path_info|locate_nav:'recommendations' }}">好物推荐</a>
+                    <a href="/blog/about/" class="{{ request.path_info|locate_nav:'about' }}">关于网站</a>
+                    <a class="mobile_nav_bt" @click="mobile_side_drawer=true" href="javascript:void(0);"><i
+                            class="fa fa-align-justify"></i></a>
+
+
+                </div>
+                {% block search-box %}
+                    <div class="nav-left_search">
+                        <input placeholder="搜索内容" v-model="search_content" @keydown.enter="do_search"
+                               class="input-search">
+                        <img src="/static/img/sousuo.svg" alt="search icon" class="search-icon">
+                    </div>
+                {% endblock %}
+            </div>
+            <div class="nav-right flexing">
+                <img v-show="theme === 'light'" src="/static/img/theme/suncloud.svg" alt="light mode"
+                     @click="setTheme('dark')">
+                <img v-show="theme === 'dark'" src="/static/img/theme/moon.svg" alt="dark mode"
+                     @click="setTheme('light')">
+                {% if request.user.username %}
+                    <el-dropdown>
+                    <span class="el-dropdown-link">{{ request.user.username }}<i
+                            class="el-icon-arrow-down el-icon--right"></i></span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item><a href="/blog/user_space/">个人中心</a></el-dropdown-item>
+                            <el-dropdown-item><a href="/blog/logout/">注销登录</a></el-dropdown-item>
+                            {% if request.user.is_superuser %}
+                                <el-dropdown-item><a href="/blog/add_article/">发布文章</a></el-dropdown-item>
+                                <el-dropdown-item><a href="/admin/">后台管理</a></el-dropdown-item>
+                            {% endif %}
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                {% else %}
+                    <a href="/blog/login/">登录</a>
+                    <a href="/blog/register/">注册</a>
+                {% endif %}
+            </div>
+        </nav>
+        {% block banner %}
+            {% banner 'index' %}
+        {% endblock %}
+        <main>
+            {% csrf_token %}
+            {% block main %}
+                <div class="flexing main-content">
+                    <div class="author-notice-feedback">
+                        <div class="author-card">
+                            <div class="author-avatar flexing">
+                                <img src="/static/img/author-card/tmpp91s8163.JPG" alt="">
+                            </div>
+                            <p class="authorName">西然</p>
+                            <p class="abstract">这时西然博客2.0！我是作者</p>
+                            <div class="contact-author flexing">
+                                <div><img src="/static/img/author-card/mail.svg" alt="" class="svg">
+                                    <img src="/static/img/author-card/img.png" alt="" class="hidden">
+                                </div>
+                                <div><img src="/static/img/author-card/weixindenglu.svg" alt="" class="svg">
+                                    <img src="/static/img/author-card/weixin_code.png" alt="" class="hidden">
+                                </div>
+                                <div><a href="https://space.bilibili.com/104125813?spm_id_from=333.1007.0.0"
+                                        target="_blank"><img src="/static/img/author-card/bilibili.svg" alt=""
+                                                             class="svg"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notice-card">
+                            <div class="notice-img"><img src="/static/img/notice/laba.svg" alt="">网站公告</div>
+                            <div class="notice-content">
+                                <p>测试测试</p>
+                            </div>
+                        </div>
+                        <div class="feedback card">
+                            <div class="fd-img"><img src="/static/img/youxiang-2.svg" alt="">意见反馈</div>
+                            <div class="fill-feedback">
+                                <input type="text" placeholder="请输入回复您的邮箱" class="res-mail" v-model="feedback.email"
+                                       ref="email">
+                                <textarea type="text" placeholder="请输入您宝贵的意见" class="feedback-content" rows="5"
+                                          v-model="feedback.content" ref="content"></textarea>
+                                <button type="button" @click="submit_feedback($event)">提交反馈</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% block article-boxer %}
+                        <div class="article-boxer">
+                            <ul class="article-ls flexing">
+                                {% for article in article_qs %}
+                                    <li>
+                                        <div class="article-card flexing">
+                                            <div class="left-cover">
+                                                <img
+                                                        src="{{ article.cover.url }}"
+                                                        alt="">
+                                            </div>
+                                            <div class="right-info">
+                                                <a href="/blog/article/{{ article.id }}/"><p
+                                                        class="title">{{ article.title }}</p></a>
+                                                <div class="date-tags">
+                                                    <img src="/static/img/shijian.svg"
+                                                         alt="">{{ article.release_date|format_create_date }}
+                                                    <img src="/static/img/vertical_line.svg" alt="">
+                                                    <img src="/static/img/biaoqian.svg"
+                                                         alt="">{{ article.get_category_display }}
+                                                    <img src="/static/img/youjiantou.svg" alt="">
+                                                    {% for tag in article.tags.all %}
+                                                        {{ tag.name }}
+                                                    {% endfor %}
+                                                </div>
+                                                <a href="/blog/article/{{ article.id }}/">
+                                                    <p class="content">
+                                                        {{ article.content }}
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+            {% block pager %}
+                {% if pager.get_page_list %}
+                    <ul class="pager flexing">
+                        {{ pager.get_page_list|safe }}
+                    </ul>
+                {% endif %}
+            {% endblock %}
+
+        </main>
+        {% block footer %}
+            <footer>
+                <div>
+                    <p>©2020 - 2022 By XiRan</p>
+                </div>
+            </footer>
+        {% endblock %}
+
+    </el-scrollbar>
+
+</div>
+</body>
+<script src="/static/vue/vue.js"></script>
+<script src="/static/element-ui/lib/index.js"></script>
+<script src="/static/axios/axios.min.js"></script>
+<script src="/static/jquery/jquery.min.js"></script>
+<script src="/static/editor-md/lib/marked.min.js"></script>
+<script src="/static/editor-md/lib/prettify.min.js"></script>
+<script src="/static/editor-md/editormd.min.js"></script>
+{% block editor_js %}
+{% endblock %}
+<script>
+    axios.interceptors.request.use(request => {
+            if (request.method !== 'get') {
+                let csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+                console.log(csrfToken)
+                request.headers['X-CSRFToken'] = csrfToken
+            }
+            return request
+        }
+    )
+
+    axios.interceptors.response.use(response => {
+            return response.data
+        }
+    )
+
+    new Vue({
+        el: '#app',
+        delimiters: ["[[", "]]"],
+        data: {
+            theme: 'light',
+            search_content: '',
+            feedback: {
+                email: '',
+                content: '',
+            },
+            content: '',
+            switch_button_text: '展开目录',
+            display_catalogue: false,
+            catalogue_content: [],
+            change_pwdDialogVisible: false,
+            change_usernameDialogVisible: false,
+            change_avatarDialogVisible: false,
+            pwd_change_info: {
+                old_pwd: '',
+                pwd: '',
+                re_pwd: '',
+            },
+            new_username: '',
+            avatar_id: null,
+            headersObj: {},
+            bindMailDialogVisible: false,
+            mail: '',
+            mail_code: '',
+            is_disabled: false,
+
+            // 发布文章
+            drawer: false,
+            add_art_size: '30%',
+            direction: 'rtl',
+            activeNames: ['1'],
+            title: '',
+            category: [],
+            tags: [],
+            recommend: true,
+            uploadCoverUrl: '',
+            addForm: {
+                title: '',
+                category: '',
+                tags: [],
+                recommend: true,
+            },
+            uploadFile: '',
+
+            // 异步请求相同标签文章
+            active_tag: 'python',
+            same_tag_arts: '',
+
+            // 添加学习分享的标签
+            add_learn_tagDialogVisible: false,
+            new_learning_tag: null,
+
+            // 学习分享的文章排序
+            active_sort: 'alter_date',
+
+            end: '',
+
+            no_more: false,
+
+
+            // 手机端侧边导航栏弹出
+            mobile_side_drawer: false,
+            mobile_side_direction: 'ltr',
+            mobile_aside_width: '40%',
+
+            max_dialogue_width: '50%',
+
+        },
+
+        created() {
+            this.init_theme();
+
+            const path = location.pathname
+            if (path.indexOf('search') !== -1) {
+                this.initialize_search_content()
+            }
+
+            if (path.indexOf('user_space') !== -1) {
+                this.avatar_id = parseInt(document.querySelector('.user_avatar img').getAttribute('id'))
+                console.log(this.avatar_id)
+            }
+            if (path.indexOf('edit_article') !== -1) {
+                let selector = 'article_cover_id'
+                let image = document.getElementById(selector)
+                console.log(image)
+                this.initialize_edit_article(image)
+            }
+            if (path.indexOf('learning') !== -1 || path.indexOf('dailylife') !== -1 || path.indexOf('recommendations') !== -1) {
+                setTimeout(() => {
+                    this.init_category_page()
+                }, 200)
+            }
+
+            this.init_dialogue_width()
+
+        },
+
+        mounted() {
+            if (location.href.indexOf('blog/article') !== -1) {
+                this.initialize_catalogue();
+                setTimeout(() => {
+                    this.get_catalogue_content()
+                    this.copy_markdown()
+                    setTimeout(() => {
+                        let bar = this.$refs.scrollbar.wrap
+                        let nav = document.querySelector('.navigator')
+                        let cat_re = document.querySelector('.cat_rec_boxer')
+                        let cat_re_top = $(cat_re).offset().top - 120
+                        bar.onscroll = () => {
+                            if (bar.scrollTop > cat_re_top) {
+                                nav.classList.add('show')
+                                cat_re.classList.add('floating')
+                            } else {
+                                nav.classList.remove('show')
+                                cat_re.classList.remove('floating')
+                            }
+                        }
+                    }, 20)
+                }, 200);
+            } else {
+                this.init_scrollbar()
+            }
+
+            this.init_refresh()
+
+            this.ListenKeyDown()
+        },
+
+        methods: {
+            uploadImg(e) {
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+
+                reader.onloadend = function () {
+                    this.uploadCoverUrl = reader.result;
+                }
+            },
+
+            setTheme(themeName) {
+                this.theme = themeName;
+                localStorage.setItem('theme', themeName);
+            },
+            init_theme() {
+                let theme = localStorage.getItem('theme');
+                if (theme) {
+                    this.theme = theme;
+                }
+            },
+
+            init_scrollbar() {
+                setTimeout(() => {
+                    let bar = this.$refs.scrollbar.wrap
+                    let nav = document.querySelector('.navigator')
+
+                    bar.onscroll = () => {
+                        if (bar.scrollTop > 300) {
+                            nav.classList.add('show')
+                        } else {
+                            nav.classList.remove('show')
+                        }
+                    }
+                }, 200)
+            },
+
+            init_refresh() {
+                setTimeout(() => {
+                    let former_url = localStorage.getItem('former_url')
+                    let cur_url = location.href
+                    if (former_url === cur_url) {
+                        // 刷新
+                        let refresh_top = localStorage.getItem('refresh_top')
+                        if (refresh_top) {
+                            let el_bar = document.querySelector('.el-scrollbar__wrap')
+                            $(el_bar).animate({scrollTop: refresh_top}, 0)
+                        }
+                    }
+                }, 300)
+            },
+
+            mobile_side_open() {
+                $('nav, header, main, footer').addClass('show-aside')
+            },
+
+            mobile_side_close() {
+                $('nav, header, main, footer').removeClass('show-aside')
+            },
+
+            do_search: function () {
+                window.open('/blog/search/?key=' + this.search_content)
+            },
+            ListenKeyDown() {
+                let el_bar = document.querySelector('.el-scrollbar__wrap')
+                document.onkeydown = (e) => {
+                    let e1 = e || event || window.event || arguments.callee.caller.arguments[0]
+                    let top = el_bar.scrollTop
+                    if (e1.code === 'ArrowDown') {
+                        $(el_bar).animate({scrollTop: top + 20}, 0)
+                    } else if (e1.code === 'ArrowUp') {
+                        $(el_bar).animate({scrollTop: top - 20}, 0)
+                    }
+                }
+            },
+
+            initialize_search_content: function () {
+                let input = document.querySelector('.input-search')
+                this.search_content = input.getAttribute('s_content')
+            },
+
+            init_dialogue_width() {
+                let w = $(document).width()
+                if (470 <= w <= 580) {
+                    this.max_dialogue_width = '50%'
+                    this.add_art_size = '50%'
+                }
+                if (370 <= w < 470) {
+                    this.max_dialogue_width = '70%'
+                    this.add_art_size = '70%'
+                }
+                if (w < 370) {
+                    this.max_dialogue_width = '100%'
+                    this.add_art_size = '100%'
+                }
+            },
+            submit_feedback(e) {
+                console.log('submit feedback!')
+                axios.post('/api/feedback/', this.feedback).then(res => {
+                    console.log(res)
+                    if (res.code !== 200) {
+                        this.$message.error(res.msg)
+                        this.$refs[res['error_field']].focus()
+                    } else {
+                        this.$message.success(res.msg)
+                        let input = $(e.target).prevAll('input')
+                        let textarea = $(e.target).prev('textarea')
+                        // console.log(input)
+                        // console.log(textarea)
+                        input.innerHTML = ''
+                        textarea.innerHTML = ''
+                    }
+                })
+            },
+
+            // 展示目录的方法
+            chang_display_catalogue: function (val) {
+                let dom = this.$refs.switch_button
+                console.log(dom)
+                if (val) {
+                    dom.classList.add('show_catalogue')
+                    this.switch_button_text = '收起目录'
+                } else {
+                    dom.classList.remove('show_catalogue')
+                    this.switch_button_text = '展开目录'
+                }
+                localStorage.setItem('display_catalogue', val)
+            },
+
+
+            // 根据用户上一次，是否打开目录来决定，用户刷新页面后，是否自动打开目录
+            initialize_catalogue: function () {
+                let status = localStorage.getItem('display_catalogue')
+                status = eval(status)
+                setTimeout(() => {
+                    if (status) {
+                        this.chang_display_catalogue(status)
+                        this.display_catalogue = true
+                    }
+                }, 500)
+            },
+
+            // 获取文章中的章节内容
+            get_catalogue_content: function () {
+                let content = $('#unique_content_id')
+                let sectionList = content.children('h1 ,h2, h3')
+                //console.log(sectionList)
+                for (let i = 0; i < sectionList.length; i++) {
+                    let text = sectionList[i].innerText
+                    let tagName = sectionList[i].tagName
+                    let selector = '#' + sectionList[i].id
+                    let position = $(selector).offset()
+                    //console.log(position.top)
+                    let top = position.top
+                    this.catalogue_content.push({
+                        tagName,
+                        top,
+                        text,
+                    })
+                }
+                //console.log(this.catalogue_content)
+            },
+
+
+            // 点击去往目录对应的小节
+            go_to_section: function (top, e) {
+                console.log('go_to_section')
+                let bar = this.$refs.scrollbar.wrap
+                $('.catalogue >.catalogue-body li').css('color', '')
+                e.target.style.color = '#4FABE6'
+                $(bar).animate({scrollTop: top - 100}, 500)
+            },
+
+
+            // 复制Markdown内容
+            copy_markdown: function () {
+                let markDown_list = $('pre')
+                let copy_text = ''
+                markDown_list.each(function () {
+                    let copy_icon = $('<i title="copy code!" class="el-icon-document-copy code-copy"></i>')
+                    $(this).append(copy_icon)
+                })
+
+                $('pre i.code-copy').click(e => {
+                    let text_list = $(e.target).prev().find('code')
+                    text_list.each(function () {
+                        copy_text += $(this).text() + '\n'
+                    })
+
+                    let Clipboard = navigator.clipboard
+                    Clipboard.writeText(copy_text).then(() => {
+                        // 复制成功的提示信息
+                        this.$message.success("复制成功！")
+                    }).catch(() => {
+                        this.$message.error('复制失败！')
+                    })
+                })
+            },
+
+
+            // 处理后台响应
+            process_response: function (res) {
+                if (res['code'] !== 200) {
+                    this.$message.error(res['msg'])
+                    this.$refs[res['error_field']].focus()
+                } else {
+                    this.$message.success(res['msg'])
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000)
+                }
+            },
+
+
+            // 发布评论
+            send_comment: function (e, aid) {
+                axios.post(`/api/comment/${aid}/`, {content: this.content}).then(response => {
+                    this.process_response(response)
+                    /*
+                    let com_ls = $(e.target).parents('div.comment-textarea').next('.comment_list').find('ul')
+                    console.log(com_ls)
+                     */
+                })
+            },
+
+
+            // 删除评论
+            delete_comment: function (e, cid, aid) {
+                this.$confirm('确定删除此评论?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.delete(`/api/delete_comment/${cid}/`, {data: {'aid': aid}}).then(res => {
+                        console.log(res)
+                        if (res.code !== 200) {
+                            this.$message.error(res['msg'])
+                        } else {
+                            this.$message.success(res['msg'])
+                            let selector = '#comm_' + cid
+                            document.querySelector(selector).remove()
+                            let comm = document.querySelector('.comm_num')
+                            $(comm).text(res['comm_num'])
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消'
+                    });
+                });
+            },
+
+            // 喜欢评论
+            like_comment(e, cid) {
+                axios.post(`/api/like_comment/${cid}/`).then(res => {
+                    if (res['code'] !== 200) {
+                        this.$message.error(res['msg'])
+                    } else {
+                        this.$message.success(res['msg'])
+                        $(e.target).next('span').text(res['like_count'])
+                        console.log($(e.target).next('span'))
+                    }
+                })
+            },
+
+            // 喜欢文章
+            like_article: function (aid) {
+                console.log(aid)
+                axios.post(`/api/like_article/${aid}/`).then(response => {
+                    if (response.code !== 200) {
+                        this.$message.error(response['msg'])
+                    } else {
+                        this.$message.success(response['msg'])
+                        let like = document.querySelector('.like_num')
+                        //like.innerHTML = response['like_num']
+                        $(like).text(response['like_num'])
+                    }
+                })
+            },
+
+            // 收藏文章
+            save_article: function (e, nid) {
+                let dom = e.target
+                axios.post(`/api/save_article/${nid}/`).then(response => {
+                    if (response['response_code'] !== 200) {
+                        this.$message.error(response['message'])
+                    } else {
+                        this.$message.success(response['message'])
+                        $(dom).parent().next().text(response['collect_count'])
+                        if (response['is_collected']) {
+                            dom.classList.add('show')
+                        } else {
+                            dom.classList.remove('show')
+                        }
+                    }
+                })
+            },
+
+            /*
+            go_to_comment(e) {
+                let com_top = localStorage.getItem('com_top')
+                if (!com_top) {
+                    let com = document.querySelector('.comment-textarea')
+                    com_top = $(com).offset().top - 60
+                    localStorage.setItem('com_top', com_top.toString())
+                }
+                console.log(com_top)
+                let bar = this.$refs.scrollbar.wrap
+                $(bar).animate({scrollTop: com_top}, 1000)
+            },
+            go_to_comment(e) {
+                let bar = this.$refs.scrollbar.wrap
+                let com_top = localStorage.getItem('comment_top')
+                console.log(com_top)
+                if (!com_top) {
+                    let com = document.querySelector('.comment-textarea')
+                    let com_top = $(com).offset().top - 60
+                    console.log(com_top)
+                    localStorage.setItem('comment_top', com_top)
+                    $(bar).animate({scrollTop: com_top}, 800)
+                }
+                $(bar).animate({scrollTop: com_top}, 800)
+            },
+             */
+
+            go_to_comment(e) {
+                let bar = this.$refs.scrollbar.wrap
+                let com = document.querySelector('.comment-textarea')
+                let com_top = $(com).offset().top - 60
+                console.log(com_top)
+                $(bar).animate({scrollTop: com_top + bar.scrollTop}, 800)
+            },
+
+            share_article() {
+                let url = '127.0.0.1:8001' + location.pathname
+                console.log(url)
+                let Clipboard = navigator.clipboard
+                Clipboard.writeText(url).then(() => {
+                    // 复制成功的提示信息
+                    this.$message.success("复制成功！")
+                }).catch(() => {
+                    this.$message.error('复制失败！')
+                })
+            },
+
+            // 回到顶部
+            back_to_top: function () {
+                let bar = this.$refs.scrollbar.wrap
+                console.log('back to top')
+                $(bar).animate({
+                    scrollTop: 0
+                }, 800)
+            },
+
+            change_username: function (e) {
+                axios.post('/api/change_username/', {new_username: this.new_username}).then(res => {
+                    console.log(res)
+                    if (res.code !== 200) {
+                        this.$message.error(res.msg)
+                        this.$refs[res['error_field']].focus()
+                    } else {
+                        this.$message.success(res.msg)
+                        this.change_usernameDialogVisible = false
+                        let uname1 = $(e.target).parents('.user_info').find('.user_avatar span')
+                        console.log(uname1)
+                        uname1.text(this.new_username)
+                        let uname2 = $(e.target).parents('.user_info').find('li.username')
+                        console.log(uname2)
+                        uname2.text('用户名：' + this.new_username)
+                    }
+                })
+            },
+            change_pwd: function () {
+                axios.post(`/api/change_pwd/`, this.pwd_change_info).then(res => {
+                    console.log(res)
+                    if (res.code !== 200) {
+                        this.$message.error(res.msg)
+                        this.$refs[res['error_field']].focus()
+                    } else {
+                        this.$message.success(res.msg)
+                        this.change_pwdDialogVisible = false
+                        setTimeout(() => {
+                            this.$message.success('2秒后跳转登录页')
+                            location.replace('/blog/login/')
+                        }, 2000)
+                    }
+                })
+            },
+            change_avatar: function () {
+                console.log(this.avatar_id)
+                axios.post('/api/change_avatar/', {avatar_id: this.avatar_id}).then(res => {
+                    console.log(res)
+                    if (res.code !== 200) {
+                        this.$message.error(res.msg)
+                    } else {
+                        this.change_avatarDialogVisible = false
+                        this.$message.success(res.msg)
+                        let new_avatar = res.avatar_url
+                        document.querySelector('.user_avatar img').setAttribute('src', new_avatar)
+                    }
+                })
+            },
+
+            send_mail_code() {
+                console.log('send mail')
+                axios.post('/api/send_mail_code/', {mail: this.mail}).then(res => {
+                    console.log(res)
+                    if (res.code === 200) {
+                        this.$message.success(res.msg)
+                        let countDown = 60
+                        let timer = null
+                        this.is_disabled = true
+                        let button = document.querySelector('.send_code_button')
+                        button.setAttribute('style', 'color: #FFFFFF;')
+                        timer = setInterval(() => {
+                            if (countDown === 1) {
+                                this.is_disabled = false
+                                button.removeAttribute('style')
+                                button.innerHTML = '获取验证码'
+                                clearInterval(timer)
+                            } else {
+                                button.innerHTML = countDown.toString()
+                                countDown--
+                            }
+                        }, 1000)
+                    } else {
+                        this.$message.error(res.msg)
+                        this.$refs[res['error_field']].focus()
+                    }
+                })
+            },
+
+            bind_mail() {
+                console.log('bind mail!')
+                axios.post('/api/bind_mail/', {mail: this.mail, var_code: this.mail_code}).then(res => {
+                    console.log(res)
+                    if (res.code !== 200) {
+                        this.$message.error(res.msg)
+                        this.$refs[res['error_field']].focus()
+                    } else {
+                        this.$message.success(res.msg)
+                        let dom = document.querySelector('.user_bind_amil')
+                        console.log(dom)
+                        dom.innerHTML = '解绑邮箱'
+                        this.bindMailDialogVisible = false
+                    }
+                })
+            },
+
+            //初始化修改文章
+            initialize_edit_article(img) {
+                let infos = document.getElementById('article_infos')
+                console.log(infos)
+                this.addForm.title = infos.getAttribute('title_')
+                this.addForm.content = infos.getAttribute('content_')
+                img.setAttribute('src', infos.getAttribute('cover_url'))
+                this.addForm.category = infos.getAttribute('category_')
+                let tags = infos.getAttribute('tags_')
+                if (tags !== '[]') {
+                    this.addForm.tags = eval(infos.getAttribute('tags_'))
+                }
+                let recommend = infos.getAttribute('recommend_')
+                this.recommend = recommend === 'True';
+                console.log(this.addForm)
+            },
+
+            // 展示抽屉的方法
+            display_drawer: function () {
+                this.drawer = true
+            },
+
+            // 抽屉关闭前的弹窗确认方法
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {
+                    });
+            },
+
+            // 控制台打印点开的选项
+            handleChange(val) {
+                console.log(val);
+            },
+
+            // 更换文章封面
+            change_cover: function () {
+                setTimeout(() => {
+                    let cover_path = document.querySelector('.article_cover input').value
+                    let cover = document.getElementById('cover_image_id')
+                    cover.src = cover_path
+                }, 5)
+            },
+
+            // 发布文章
+            add_article() {
+                let config = {
+                    headers: {'Content-Type': 'multipart/form-data'}
+                }
+                let data = {
+                    title: this.title,
+                    content: editor.querySelector('.article_editor textarea').value,
+                    category: this.category,
+                    tags: this.tags,
+                    recommend: this.recommend,
+                }
+                axios.post('/api/add_article/', data).then(res => {
+                    console.log(res)
+                    if (res.code !== 200) {
+                        this.$message.error(res['msg'])
+                        this.$refs[res['error_field}']].focus()
+                    } else {
+                        this.$message.success(res['msg'])
+                        setTimeout(() => {
+                            location.href = res['article_href']
+                        }, 1000)
+                    }
+                })
+            },
+
+            // 放弃发布文章
+            exit_add: function (done) {
+                this.$confirm('放弃编辑？')
+                    .then(_ => {
+                        setTimeout(() => {
+                            location.reload()
+                        }, 500)
+                        done();
+                    })
+                    .catch(_ => {
+                    });
+            },
+
+            handleFile(params) {
+                this.uploadFile = params.file;
+                // console.log(params);
+                // console.log(this.addForm)
+            },
+
+            submitUpload() {
+                let formData = new FormData();
+                formData.append("title", this.addForm.title);
+                formData.append("content", editor.querySelector('.article_editor textarea').value);
+                formData.append("category", this.addForm.category);
+                formData.append("tags", this.addForm.tags);
+                formData.append("cover", this.uploadFile);
+                axios.post("/api/add_article/", formData).then(res => {
+                    console.log(res)
+                    if (res.code !== 200) {
+                        this.$message.error(res['msg'])
+                        this.$refs[res['error_field}']].focus()
+                    } else {
+                        this.$message.success(res.msg)
+                        setTimeout(() => {
+                            location.href = res['article_href']
+                        }, 1000)
+                    }
+                })
+            },
+
+
+            submitEditUpload(aid) {
+                console.log('edit article')
+                let formData = new FormData();
+                formData.append("title", this.addForm.title);
+                formData.append("content", editor.querySelector('.article_editor textarea').value);
+                formData.append("category", this.addForm.category);
+                formData.append("tags", this.addForm.tags);
+                formData.append("cover", this.uploadFile);
+                console.log(this.addForm)
+                axios.post(`/api/edit_article/${aid}/`, formData
+                ).then(res => {
+                    console.log(res)
+                    if (res.code !== 200) {
+                        this.$message.error(res['msg'])
+                        this.$refs[res['error_field}']].focus()
+                    } else {
+                        this.$message.success(res.msg)
+                        setTimeout(() => {
+                            location.href = res['article_href']
+                        }, 1000)
+                    }
+                })
+            },
+
+            add_learn_tag(e) {
+                console.log('add_learn_tag')
+                console.log(this.new_learning_tag)
+                axios.post('/api/learning/add_tag/', {name: this.new_learning_tag}).then(res => {
+                    console.log(res)
+                    if (res.code !== 200) {
+                        this.$message.error(res['msg'])
+                        this.$refs[res['error_field']].focus()
+                    } else {
+                        this.$message.success(res['msg'])
+                        this.add_learn_tagDialogVisible = false
+                    }
+                })
+            },
+
+
+            // 请求相同标签文章
+            get_same_arts(para, loading) {
+                axios.get('/api/learning/', {
+                    params: para
+                }).then(res => {
+                        console.log(res)
+                        if (res['end'] !== '') {
+                            this.end = res['end']
+                        } else {
+                            this.end = ''
+                            this.no_more = true
+                        }
+                        if (!loading) {
+                            this.same_tag_arts = res['art_infos']
+                        } else {
+                            for (let i = 0; i < res['art_infos'].length; i++) {
+                                this.same_tag_arts.push(res['art_infos'][i])
+                            }
+                        }
+                    }
+                )
+            },
+
+
+            init_category_page() {
+                let tags = eval(document.querySelector('.cat_tags').getAttribute('tags__'))
+                console.log(tags)
+                if (tags.length > 0) {
+                    this.active_tag = tags[0]
+                    let para = {
+                        'tag': this.active_tag
+                    }
+                    this.get_same_arts(para, false)
+                }
+            },
+
+
+            same_tag_articles(tnm) {
+                console.log('same_tag_articles')
+                if (tnm === this.active_tag) {
+                    return ''
+                } else {
+                    this.end = ''
+                    this.no_more = false
+                    this.active_tag = tnm
+
+                    let para = {
+                        'tag': tnm
+                    }
+                    this.get_same_arts(para, false)
+                }
+                /*
+                axios.get(`/api/learning/?tag=${tnm}`).then(res => {
+                        console.log(res)
+                        if (res['end'] !== '') {
+                            this.end = res['end']
+                        } else {
+                            this.end = ''
+                            this.no_more = true
+                        }
+                        this.same_tag_arts = res['art_infos']
+                    }
+                )
+                */
+            },
+
+
+            learn_arts_sort_by_backup(way) {
+                if (way !== this.active_sort) {
+                    this.active_sort = way
+                    axios.get('/api/learning/', {
+                            params: {
+                                tag: this.active_tag,
+                                sort: way,
+                            }
+                        }
+                    ).then(res => {
+                        console.log(res)
+                        if (res['end'] !== '') {
+                            this.end = res['end']
+                            this.no_more = false
+                        } else {
+                            this.end = ''
+                            this.no_more = true
+                        }
+                        this.same_tag_arts = res['art_infos']
+                    })
+                }
+
+            },
+
+            learn_arts_sort_by_backup2(way) {
+                if (way !== this.active_sort) {
+                    this.active_sort = way
+                    if (this.no_more === true && way !== 'alter_date') {
+                        this.same_tag_arts.sort(function (a, b) {
+                            return b[way] - a[way]
+                        })
+                    } else {
+                        axios.get('/api/learning/', {
+                                params: {
+                                    tag: this.active_tag,
+                                    sort: way,
+                                }
+                            }
+                        ).then(res => {
+                            console.log(res)
+                            if (res['end'] !== '') {
+                                this.end = res['end']
+                                this.no_more = false
+                            } else {
+                                this.end = ''
+                                this.no_more = true
+                            }
+                            this.same_tag_arts = res['art_infos']
+                        })
+                    }
+                }
+            },
+
+            learn_arts_sort_by(way) {
+                if (way !== this.active_sort) {
+                    this.active_sort = way
+                    if (this.no_more === true) {
+                        if (way === 'alter_date') {
+                            this.same_tag_arts.sort(function (a, b) {
+                                    let t1 = new Date(Date.parse(a[way].replace(/-/g, "/")))
+                                    let t2 = new Date(Date.parse(b[way].replace(/-/g, "/")))
+                                    return t2.getTime() - t1.getTime()
+                                }
+                            )
+                            return ''
+                        }
+                        this.same_tag_arts.sort(function (a, b) {
+                            return b[way] - a[way]
+                        })
+
+                    } else {
+                        let para = {
+                            tag: this.active_tag,
+                            sort: way,
+                        }
+                        this.get_same_arts(para, false)
+                        /*
+                        axios.get('/api/learning/', {
+                                params: {
+                                    tag: this.active_tag,
+                                    sort: way,
+                                }
+                            }
+                        ).then(res => {
+                            console.log(res)
+                            if (res['end'] !== '') {
+                                this.end = res['end']
+                                this.no_more = false
+                            } else {
+                                this.end = ''
+                                this.no_more = true
+                            }
+                            this.same_tag_arts = res['art_infos']
+                        })
+                         */
+                    }
+                }
+            },
+
+            loading_more() {
+                let para = {
+                    tag: this.active_tag,
+                    sort: this.active_sort,
+                    end: this.end,
+                }
+                this.get_same_arts(para, true)
+                /*
+                axios.get('/api/learning/', {
+                    params: {
+                        tag: this.active_tag,
+                        sort: this.active_sort,
+                        end: this.end,
+                    }
+                }).then(res => {
+                    console.log(res)
+                    if (res['end'] !== '') {
+                        this.end = res['end']
+                    } else {
+                        this.end = ''
+                        this.no_more = true
+                    }
+                    for (let i = 0; i < res['art_infos'].length; i++) {
+                        this.same_tag_arts.push(res['art_infos'][i])
+                    }
+                })
+                 */
+            }
+        },
+
+    })
+
+    let refresh_flag = true;
+    $('a').click(e => {
+        refresh_flag = false
+    })
+    window.onbeforeunload = e => {
+        if (refresh_flag) {
+            let el_bar = document.querySelector('.el-scrollbar__wrap')
+            localStorage.setItem('refresh_top', el_bar.scrollTop)
+            localStorage.setItem('former_url', location.href)
+        }
+    }
+</script>
+{% block tags_js %}
+{% endblock %}
+{% block banner_js %}
+    <script src="/static/js/banner.js"></script>
+{% endblock %}
+</html>
+
+

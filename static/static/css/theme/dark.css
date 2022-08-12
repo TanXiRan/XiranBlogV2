@@ -1,0 +1,43 @@
+
+:root {
+    /*顶部导航条背景和字体颜色*/
+    --nav_bg: #282c34;
+    --nav_color: #FFFFFF;
+
+    /*主体的背景和字体颜色*/
+    --main_bg: #282c34;
+    --main_color: #FFFFFF;
+
+    /*底部颜色*/
+    --footer_bg: #22232a;
+    --footer_color: #FFFFFF;
+
+    /*所有a标签的默认颜色*/
+    --a_tag: #000000;
+
+    /*button标签的统一颜色*/
+    --sub_bt_bg: #40C4F0;
+
+    --del_bt_bg: #FF6B68;
+
+    /*导航栏标记颜色*/
+    --nav_active: #4FABE6;
+
+    /*鼠标悬浮的颜色*/
+    --hover_bg: #4FABE6;
+
+    --card_bg: lightgrey;
+    --card_color: #FFFFFF;
+
+    --textarea_bg: lightgrey;
+
+
+    --border_color1: darkgrey;
+    --border_color2: lightgrey;
+    --border_focus_color: #4FABE6;
+
+    --pager_bg: lightgrey;
+    --pager_bg_active: #40C4F0;
+
+    --weilei_color: lightgrey;
+}

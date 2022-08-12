@@ -1,0 +1,67 @@
+{% extends 'article/article.html' %}
+{% load my_tag %}
+{% load my_filter %}
+
+{% block title %}
+    <title>关于博客</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/about/about.css">
+{% endblock %}
+{% block public %}
+
+{% endblock %}
+
+{% block banner %}
+
+{% endblock %}
+
+
+
+{% block main %}
+    <div class="main-content">
+        <div class="title">
+            <h2>关于网站</h2>
+        </div>
+        <div class="info">
+            <div class="introduce">
+                <p>dhjfbsdkfbsfksfbsak</p>
+            </div>
+            <div class="founder">
+                <h3>关于作者</h3>
+                <div class="contact">
+                    <p class="nick-name">昵称：西然</p>
+                    <p class="phone">电话：xxxxx</p>
+                    <p class="mail">邮箱：xxxx</p>
+                    <p class="school">学校：xxxx</p>
+                    <p class="interests"></p>
+                </div>
+
+            </div>
+
+            <div class="site-info">
+                <h3>建站相关</h3>
+                <div>
+                    <p class="online-date">建建站日期：2022-8-11</p>
+                    <p class="backup">备案号：暂无</p>
+                    <p class="version">网站版本：2.0</p>
+                </div>
+            </div>
+            <div class="thanks">
+                <h3>特别感谢</h3>
+                <div class="flexing">
+                    <a href="http://www.fengfengzhidao.com/"><img src="/static/img/about/fengfeng.ico" alt="">枫枫知道</a>
+                    <a href="https://cloud.tencent.com/"><img src="/static/img/about/tencentCloud.ico" alt="">腾讯云</a>
+                    <a href="http://www.fengfengzhidao.com/"><img src="/static/img/about/tencentCloud.ico"
+                                                                  alt="">七牛云</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

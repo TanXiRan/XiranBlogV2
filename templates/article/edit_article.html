@@ -1,0 +1,30 @@
+{% extends 'article/add_article.html' %}
+
+{% block title %}
+    <title>编辑{{ article_.title }}</title>
+{% endblock %}
+
+
+
+{% block el-button %}
+    <el-button @click="display_drawer" type="primary"
+               id="article_infos"
+               title_="{{ article_.title }}"
+               category_="{{ article_.category }}"
+               tags_="{{ tags_ }}"
+               recommend_="{{ article_.recommend }}"
+               cover_url="{{ article_.cover.url }}"
+    >修改文章信息
+    </el-button>
+{% endblock %}
+{% block exit %}
+    <el-button @click="submitEditUpload('{{ article_.id }}')" type="primary" class="post_infos">发布文章</el-button>
+    <el-button @click="exit_add" type="danger" class="exit_add">退出编辑</el-button>
+{% endblock %}
+{% block editor %}
+    <div class="article_editor" id="editor">
+        <textarea style="display: none;" ref="content">{{ article_.content }}</textarea>
+    </div>
+{% endblock %}
+
+

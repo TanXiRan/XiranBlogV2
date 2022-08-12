@@ -1,0 +1,512 @@
+// 从2560到1024都以public为标准
+// 2560-2260:导航栏padding改为200px，banner高度改为800px，轮播句子的left改为240px， bottom改为100px，article-info改为1700px, 个人中心的背景图改为600px
+@media screen and (max-width: 2560px) and (min-width: 2260px) {
+
+  #app {
+    .navigator {
+      width: calc(100% - 400px);
+      padding: 0 200px;
+    }
+
+    header.banner {
+      height: 800px;
+
+      .article-info {
+        width: 1700px;
+      }
+
+      .dynamic_shuffle {
+        .rotating-sentence {
+          left: 240px;
+          bottom: 100px;
+        }
+      }
+
+    }
+
+    header.user_space_bg {
+      height: 600px;
+    }
+  }
+}
+
+
+// 2259-1920:导航栏padding改为160px，banner高度改为700px，轮播句子的left改为200px， bottom改为80px，article-info改为1400px, 个人中心的背景图改为600px
+@media screen and (max-width: 2259px) and (min-width: 1920px) {
+
+  #app {
+    .navigator {
+      width: calc(100% - 320px);
+      padding: 0 160px;
+    }
+
+    header.banner {
+      height: 700px;
+
+      .article-info {
+        width: 1400px;
+      }
+
+      .dynamic_shuffle {
+        .rotating-sentence {
+          left: 200px;
+          bottom: 80px;
+        }
+      }
+    }
+
+    header.user_space_bg {
+      height: 600px;
+    }
+  }
+}
+
+
+// 1919-1661:导航栏padding改为140px，banner高度改为700px，轮播句子的left改为180px， bottom改为70px，article-info改为1200px, 个人中心的背景图改为400px
+@media screen and (max-width: 1919px) and (min-width: 1661px) {
+
+  #app {
+    .navigator {
+      width: calc(100% - 280px);
+      padding: 0 140px;
+    }
+
+    header.banner {
+      height: 700px;
+
+      .article-info {
+        width: 1200px;
+      }
+
+      .dynamic_shuffle {
+        .rotating-sentence {
+          left: 180px;
+          bottom: 70px;
+        }
+      }
+    }
+
+    header.user_space_bg {
+      height: 400px;
+    }
+  }
+}
+
+
+// 1280-1024:导航栏padding改为80px，banner高度改为600px，轮播句子的left改为100px， bottom改为60px，article-info改为800px；left改为10%, 个人中心的背景图改为300px，main的padding改为 20px 10%;，
+// 文章的浮动改为left: 10%;侧边悬浮操作改为60px
+@media screen and (max-width: 1280px) and (min-width: 1024px) {
+
+  #app {
+    .navigator {
+      width: calc(100% - 160px);
+      padding: 0 80px;
+    }
+
+    header.banner {
+      height: 600px;
+
+      .article-info {
+        width: 800px;
+        left: 10%;
+      }
+
+      .dynamic_shuffle {
+        .rotating-sentence {
+          left: 100px;
+          bottom: 60px;
+        }
+      }
+    }
+
+    main {
+      padding: 20px 10%;
+    }
+
+    .floating {
+      left: 10%;
+    }
+
+    .middle {
+      .sidebar-actions {
+        right: 60px;
+      }
+    }
+
+    header.user_space_bg {
+      height: 300px;
+    }
+  }
+}
+
+
+// 平板的适配
+// 1023-868:导航栏padding改为40px, a标签的右margin改为10px，左边占百分之八十，右边百分之二十，搜索框宽度改为120px，banner高度改为600px，轮播句子的left改为60px， bottom改为40px，
+// article-info改为600px；left改为6%, 个人中心的背景图改为300px，main的padding改为 16px 6%;，文章的浮动改为left: 6%;侧边悬浮操作改为30px
+@media screen and (max-width: 1023px) and (min-width: 868px) {
+
+  #app {
+    .navigator {
+      width: calc(100% - 80px);
+      padding: 0 40px;
+
+      a {
+        margin-right: 10px;
+      }
+
+      .nav-left {
+        width: 80%;
+      }
+
+      .nav-right {
+        width: 20%;
+      }
+
+      .nav-left_search {
+
+        input.input-search {
+          height: 20px;
+          width: 120px !important;
+        }
+
+        img {
+          right: 10px;
+          top: 5px;
+        }
+      }
+    }
+
+    header.banner {
+      height: 600px;
+
+      .article-info {
+        width: 600px;
+        left: 8%;
+        top: 72%;
+      }
+
+      .dynamic_shuffle {
+        .rotating-sentence {
+          left: 60px;
+          bottom: 40px;
+        }
+      }
+    }
+
+    main {
+      padding: 20px 6%;
+    }
+
+    .floating {
+      left: 6%;
+    }
+
+    .middle {
+      .sidebar-actions {
+        bottom: 20px;
+        right: 30px;
+      }
+    }
+
+    header.user_space_bg {
+      height: 300px;
+    }
+  }
+
+}
+
+
+// 867-768:导航栏padding改为30px, a标签的右margin改为10px，左边占百分之八十，右边百分之二十，搜索框宽度改为100px，banner高度改为500px，轮播句子的left改为40px， bottom改为20px，
+// article-info改为550px；left改为3%, 个人中心的背景图改为300px，main的padding改为 3%;，文章的浮动改为left: 3%;侧边悬浮操作改为15px
+@media screen and (max-width: 867px) and (min-width: 768px) {
+
+  #app {
+    .navigator {
+      width: calc(100% - 60px);
+      padding: 0 30px;
+
+      a {
+        margin-right: 10px;
+      }
+
+      .nav-left {
+        width: 80%;
+      }
+
+      .nav-right {
+        width: 20%;
+      }
+
+      .nav-left_search {
+
+        input.input-search {
+          height: 20px;
+          width: 100px !important;
+        }
+
+        img {
+          right: 10px;
+          top: 5px;
+        }
+      }
+    }
+
+    header.banner {
+      height: 500px;
+
+      .article-info {
+        width: 550px;
+        left: 3%;
+        top: 69%;
+      }
+
+      .dynamic_shuffle {
+        .rotating-sentence {
+          left: 40px;
+          bottom: 20px;
+        }
+      }
+    }
+
+    main {
+      padding: 3%;
+    }
+
+    .author-notice-feedback {
+      //display: none;
+      width: 200px;
+    }
+
+    .article-boxer {
+      width: calc(100% - 220px);
+    }
+
+    .catalogue-recommendation {
+      width: 200px;
+      margin-right: 12px;
+    }
+
+    .catalogue {
+      margin-bottom: 12px;
+    }
+
+    .floating {
+      width: 200px;
+      left: 3%;
+    }
+
+    .middle {
+      .sidebar-actions {
+        bottom: 20px;
+        right: 15px;
+      }
+    }
+
+    header.user_space_bg {
+      height: 300px;
+    }
+  }
+}
+
+
+// 767-668:导航栏padding改为20px, a标签的右margin改为8px;font-size: 14px，左边占百分之70，右边百分之30，搜索框宽度改为80px，banner高度改为500px，轮播句子的left改为40px， bottom改为20px，
+// article-info改为500px；left改为3%, 个人中心的背景图改为300px，main的padding改为 3%;，文章的浮动改为left: 3%;侧边悬浮操作改为15px
+@media screen and (max-width: 767px) and (min-width: 668px) {
+
+  #app {
+    .navigator {
+      width: calc(100% - 40px);
+      padding: 0 20px;
+
+      a {
+        margin-right: 8px;
+        font-size: 14px;
+      }
+
+      .nav-left {
+        width: 70%;
+      }
+
+      .nav-right {
+        width: 30%;
+      }
+
+      .nav-left_search {
+
+        input.input-search {
+          height: 20px;
+          width: 80px !important;
+        }
+
+        img {
+          right: 10px;
+          top: 5px;
+        }
+      }
+    }
+
+    header.banner {
+      height: 500px;
+
+      .article-info {
+        width: 500px;
+        left: 3%;
+        top: 67%;
+      }
+
+      .dynamic_shuffle {
+        .rotating-sentence {
+          left: 40px;
+          bottom: 20px;
+        }
+      }
+    }
+
+    main {
+      padding: 3%;
+    }
+
+    .author-notice-feedback {
+      //display: none;
+      width: 160px;
+
+      > div {
+        margin-bottom: 10px;
+      }
+    }
+
+    .article-boxer {
+      //width: 100%;
+      width: calc(100% - 180px);
+      margin-left: 10px;
+
+      ul {
+        li {
+          margin-bottom: 10px;
+          height: 128px;
+          padding: 8px;
+
+          .left-cover {
+            width: 180px;
+            height: 110px;
+            margin-right: 10px;
+            overflow: hidden;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+
+          .right-info {
+            width: calc(100% - 175px);
+
+            .title {
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 5px;
+              display: -webkit-box;
+              -webkit-line-clamp: 1;
+              -webkit-box-orient: vertical;
+              text-align: left;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            .date-tags {
+              font-size: 14px;
+              margin: 5px 0;
+              color: #777;
+
+              img {
+                width: 14px;
+                margin-right: 5px;
+                vertical-align: middle;
+              }
+            }
+
+            .content {
+              margin-top: 5px;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              text-align: left;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
+    }
+
+    .catalogue-recommendation {
+      //display: none;
+      width: 160px;
+      margin-right: 10px;
+    }
+
+    .catalogue {
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+
+    .article-recommendation {
+      padding: 10px;
+
+      > p {
+        padding-bottom: 6px;
+      }
+
+      ul {
+        margin-top: 6px;
+
+        > div {
+          padding: 6px 0;
+        }
+
+        li {
+          .rec-cover {
+            width: 60px;
+            height: 34px;
+          }
+
+          .rec_info {
+            width: calc(100% - 65px);
+          }
+
+          .rec-release-date {
+            font-size: 14px;
+            color: gray;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+
+
+    .floating {
+      width: 160px;
+      left: 3%;
+    }
+
+    .middle {
+      //width: 100%;
+      width: calc(100% - 170px);
+
+      .sidebar-actions {
+        bottom: 20px;
+        right: 15px;
+        z-index: 1;
+      }
+    }
+
+    header.user_space_bg {
+      height: 300px;
+    }
+  }
+}

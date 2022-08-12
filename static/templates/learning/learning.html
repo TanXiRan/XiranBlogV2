@@ -1,0 +1,109 @@
+{% extends 'index/index.html' %}
+{% load my_tag %}
+{% load my_filter %}
+
+{% block title %}
+    <title>学习分享</title>
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/learning/learning.css">
+{% endblock %}
+
+{% block banner %}
+    {% banner 'learning' %}
+{% endblock %}
+
+
+{% block article-boxer %}
+    <div class="left-body">
+        <div class="cat_tags" tags__="{{ tag_names }}">
+            <ul class="flexing">
+                {% for tag in tags %}
+                    <li @click="same_tag_articles('{{ tag.name }}')"
+                        class="{{ tag.name }}-{{ tag.id }}"
+                        :flag="active_tag === '{{ tag.name }}' ? 'active' : ''"
+                    >{{ tag }}
+                    </li>
+                {% endfor %}
+                {% if request.user.is_superuser %}
+                    <li class="add_learning_tag super" @click="add_learn_tagDialogVisible = true">
+                        添加标签
+                    </li>
+                    <el-dialog
+                            title="添加标签"
+                            :visible.sync="add_learn_tagDialogVisible"
+                            width="30%"
+                            center>
+                            <span>
+                                <p>新的标签名</p>
+                                <el-input v-model="new_learning_tag" ref="new_tag"></el-input>
+                            </span>
+                        <span slot="footer" class="dialog-footer">
+                                <el-button @click="add_learn_tagDialogVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="add_learn_tag($event)">确 定</el-button>
+                            </span>
+                    </el-dialog>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="tag_learn_nav flexing">
+            <div class="tag_name">
+                <p>[[ active_tag ]]</p>
+            </div>
+            <div class="sorting">
+                <span @click="learn_arts_sort_by('alter_date')"
+                      :flag="active_sort === 'alter_date' ? 'active-sorting' : ''">最新发布</span>
+                <span @click="learn_arts_sort_by('like_num')"
+                      :flag="active_sort === 'like_num' ? 'active-sorting' : ''">最多点赞</span>
+            </div>
+        </div>
+        <div class="all-art-lis">
+            <ul class="flexing">
+                <li v-for="art in same_tag_arts" :key="art.aid">
+                    <div class="article-card flexing">
+                        <div class="left-cover">
+                            <img :src="art.cover" alt="">
+                        </div>
+                        <div class="right-info">
+                            <a :href="art.href"><p
+                                    class="title">[[ art.title ]]</p></a>
+                            <div class="date-tags">
+                                <img src="/static/img/shijian.svg"
+                                     alt="">[[ art.alter_date ]]
+                                <img src="/static/img/vertical_line.svg" alt="">
+                                <img src="/static/img/biaoqian.svg"
+                                     alt="">[[ art.category ]]
+                                <img src="/static/img/youjiantou.svg" alt="">
+                                <span v-for="tag in art.tags" :key="tag">[[ tag ]]</span>
+                            </div>
+                            <a :href="art.href">
+                                <p class="content">
+                                    [[ art.content ]]
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <div>
+            <p @click="loading_more" v-if="end !== ''">加载更多</p>
+            <p v-if="no_more === true">没有更多文章了</p>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block pager %}
+
+{% endblock %}
+
+{% block tags_js %}
+    <script>
+
+    </script>
+{% endblock %}

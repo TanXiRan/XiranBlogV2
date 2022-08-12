@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页登录页面</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/element-ui/lib/theme-chalk/index.css">
+    <script src="/static/vue/vue.js"></script>
+    <script src="/static/jquery/jquery.min.js"></script>
+    <script src="/static/element-ui/lib/index.js"></script>
+</head>
+<body>
+<div class="main">
+    <div class="back-to-site">
+        <a href="/blog/"><img src="/static/img/youjiantou.svg" alt="">返回首页</a>
+    </div>
+    <div class="login">
+        <div class="login_box">
+            {% block form %}
+                <h2>网站登录页面</h2>
+                <div class="login_form">
+                    <div>
+                        {% csrf_token %}
+                        <input type="text" v-model="login_form.username" placeholder="请输入用户名登录"
+                               ref="username">
+                        <input type="password" v-model="login_form.password" placeholder="请输入密码"
+                               ref="password">
+                        <input type="submit" @click="postLoginData" value="登录">
+                    </div>
+                </div>
+                <div class="to_sign">
+                    <p>新用户？<a href="/blog/register/">立即注册</a></p>
+                </div>
+            {% endblock %}
+            <div class="other_login_methods">
+                <p>------------- 其他方式登录 -------------</p>
+                <div>
+                    <img src="/static/img/footer/QQ.svg" alt="">
+                    <img src="/static/img/footer/weixin_icon.svg" alt="">
+                    <img src="/static/img/footer/weibo_icon.svg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/axios/axios.min.js"></script>
+<script>
+    axios.interceptors.request.use(request => {
+            if (request.method === 'post') {
+                let csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+                console.log(csrfToken)
+                request.headers['X-CSRFToken'] = csrfToken
+            }
+            return request
+        }
+    )
+
+    axios.interceptors.response.use(response => {
+            return response.data
+        }
+    )
+
+    let vm = new Vue({
+        el: '.main',
+        delimiters: ["[[", "]]"],
+        data: {
+            login_form: {
+                username: '',
+                password: '',
+            }
+        },
+        methods: {
+            printData: function () {
+                console.log(this.login_form)
+            },
+
+            // axios语法
+            postLoginData: function () {
+                axios.post('/api/login/', this.login_form).then(response => {
+                    console.log(response)
+                    if (!response['passed']) {
+                        this.$message.error(response.msg)
+                        this.$refs[response['error_field']].focus()
+                    } else {
+                        this.$message.success(response.msg)
+                        setTimeout(() => {
+                            location.href = '/blog/'
+                        }, 1000)
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

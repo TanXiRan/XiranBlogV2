@@ -1,0 +1,176 @@
+{% extends 'index/index.html' %}
+
+{% load my_tag %}
+{% load my_filter %}
+
+{% block title %}
+    <title>{{ request.user.username }}的个人空间</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/user_space/user_space.css">
+{% endblock %}
+
+{% block banner %}
+    <header class="user_space_bg">
+        <div>
+            <img src="/static/img/高考加油-壁纸.png" alt="">
+        </div>
+    </header>
+{% endblock %}
+
+{% block main %}
+    <div class="user_space">
+        <div class="user_info space-card">
+            <div class="user_avatar">
+                <img src="{{ request.user.avatar.path.url }}" alt=""
+                     id="{{ request.user.avatar.id }}"><span>{{ request.user.username }}</span>
+            </div>
+            <div class="headline"><p>个人信息</p></div>
+            <ul class="info_ls flexing">
+                <li class="username">用户名：{{ request.user.username }}</li>
+                <li class="date_joined">注册时间：{{ request.user.date_joined|format_create_date }}</li>
+                <li class="latest_login">上次登录时间：{{ request.user.last_login|format_create_date }}</li>
+                <li class="account_status">账号状态：{{ request.user.get_account_status_display }}</li>
+                <li class="like_num">点赞数：{{ request.user.like_num }}</li>
+                <li class="comm_num">评论数：{{ request.user.comm_num }}</li>
+                <li class="share_num">分享数：{{ request.user.share_num }}</li>
+                <li class="scan_num">浏览量：{{ request.user.scan_num }}</li>
+            </ul>
+        </div>
+        <div class="account-actions  space-card">
+            <div class="headline"><p>编辑账号</p></div>
+            <div class="user_account">
+                <ul class="actions flexing">
+                    <li>
+                        <el-button @click="change_pwdDialogVisible = true" plain>修改密码</el-button>
+                        <el-dialog
+                                title="修改秘密"
+                                :visible.sync="change_pwdDialogVisible"
+                                :width="max_dialogue_width"
+                                center>
+                            <span>
+                                <div>
+                                <label for="old_pwd">请输入原密码
+                                    <el-input type="password" id="old_pwd_id" placeholder="请输入原密码"
+                                              v-model="pwd_change_info.old_pwd" ref="old_pwd"></el-input>
+                                </label>
+                                <label for="pwd">请输入新密码
+                                    <el-input type="password" id="pwd_id" placeholder="请输入新密码"
+                                              v-model="pwd_change_info.pwd" ref="pwd"></el-input>
+                                </label>
+                                <label for="re_pwd">请再次输入新密码
+                                    <el-input type="password" id="re_pwd_id" placeholder="请再次输入新密码"
+                                              v-model="pwd_change_info.re_pwd" ref="re_pwd"></el-input>
+                                </label>
+                            </div>
+                            </span>
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="change_pwdDialogVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="change_pwd">确 定</el-button>
+                            </span>
+                        </el-dialog>
+
+                    </li>
+                    <li>
+                        <el-button plain @click="change_usernameDialogVisible = true">修改昵称</el-button>
+                        <el-dialog
+                                title="修改昵称"
+                                :visible.sync="change_usernameDialogVisible"
+                                :width="max_dialogue_width"
+                                center>
+                            <span>
+                                <p>输入新昵称</p>
+                                <el-input v-model="new_username" class="new-user-username"
+                                          ref="new_username"></el-input>
+                            </span>
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="change_usernameDialogVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="change_username($event)">确 定</el-button>
+                            </span>
+                        </el-dialog>
+                    </li>
+                    <li>
+                        <el-button plain @click="change_avatarDialogVisible = true">修改头像</el-button>
+                        <el-dialog
+                                title="修改头像"
+                                :visible.sync="change_avatarDialogVisible"
+                                :width="max_dialogue_width"
+                                center>
+                            <span>
+                                <ul class="avatar-list flexing">
+                                    {% for avatar in avatar_list %}
+                                        <li>
+                                            <el-radio :label="{{ avatar.id }}" v-model="avatar_id"><img
+                                                    src="{{ avatar.path.url }}"></el-radio>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </span>
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="change_avatarDialogVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="change_avatar">确 定</el-button>
+                            </span>
+                        </el-dialog>
+                    </li>
+                    <li>
+                        {% if request.user.tel %}
+                            <el-button plain>换绑手机号</el-button>
+                        {% else %}
+                            <el-button plain>绑定手机</el-button>
+                        {% endif %}
+                    </li>
+                    <li>
+                        {% if request.user.email %}
+                            <el-button plain>换绑邮箱</el-button>
+                        {% else %}
+                            <el-button plain @click="bindMailDialogVisible = true" class="user_bind_amil">绑定邮箱
+                            </el-button>
+                            <el-dialog
+                                    title="绑定邮箱"
+                                    :visible.sync="bindMailDialogVisible"
+                                    :width="max_dialogue_width"
+                                    center>
+                            <span>
+                                <el-input v-model="mail" class="input-mail" placeholder="请输入正确的邮箱"
+                                          ref="mail"></el-input>
+                                <div class="mail_code-boxer">
+                                    <el-input v-model="mail_code" class="fill-mail-code"
+                                              placeholder="请输入验证码" ref="var_code"></el-input>
+                                    <el-button class="send_code_button" @click="send_mail_code" :disabled="is_disabled">获取验证码</el-button>
+                                </div>
+                            </span>
+                                <span slot="footer" class="dialog-footer">
+                                <el-button @click="bindMailDialogVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="bind_mail($event)"
+                                           class="confirm-bind-mail">确 定</el-button>
+                            </span>
+                            </el-dialog>
+                        {% endif %}
+                    </li>
+                    <li>
+                        <a href="/blog/logout/">
+                            <el-button plain>注销登录</el-button>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% if request.user.is_superuser %}
+            <div class="superuser_actions space-card">
+                <div class="headline"><p>管理文章</p></div>
+                <div class="super-actions flexing">
+                    <el-button class="add_article" plain><a href="/blog/add_article/" target="_blank">发布文章</a>
+                    </el-button>
+                    <el-button class="edit_article" plain><a href=/blog/edit_article/>编辑文章</a></el-button>
+                    <el-button class="auth-backend" plain><a href="/admin/" target="_blank">网站后台</a></el-button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+
+{% block banner_js %}
+{% endblock %}

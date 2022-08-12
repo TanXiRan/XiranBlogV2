@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网页注册页面</title>
+    <link rel="stylesheet" href="/static/css/register.css">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/element-ui/lib/theme-chalk/index.css">
+    <script src="/static/vue/vue.js"></script>
+    <script src="/static/jquery/jquery.min.js"></script>
+    <script src="/static/vue/vue.js"></script>
+    <script src="/static/element-ui/lib/index.js"></script>
+</head>
+<body>
+<div class="main">
+    <div class="back-to-site">
+        <a href="/blog/"><img src="/static/img/youjiantou.svg" alt="">返回首页</a>
+    </div>
+    <div class="login">
+        <div class="login_box">
+            <h2>网站注册页面</h2>
+            <div class="SignIn_form" @click="">
+                {% csrf_token %}
+                <div>
+                    <input type="text" v-model="SignIn_form.username" ref="username" placeholder="创建你的用户名">
+                    <input type="password" v-model="SignIn_form.password" ref="password"
+                           placeholder="请输入密码">
+                    <input type="password" v-model="SignIn_form.repeat_password" ref="repeat_password"
+                           placeholder="请确认密码">
+                    <div class="code">
+                        <input type="text" v-model="SignIn_form.verification_strings"
+                               ref="verification_strings" placeholder="验证码">
+                        <img @click="update_verification_strings" src="/api/verification_code/"
+                             :style="display_img">
+                        <p @click="display_verification_strings" :style="{ display: display_p }">获取验证码</p>
+                    </div>
+                    <input type="submit" @click="postSignInData" value="注册">
+                </div>
+            </div>
+            <div class="to_login">
+                <p>已有账户？<a href="/blog/login/">立即登录</a></p>
+            </div>
+            <div class="other_login_methods">
+                <p>------------- 其他方式登录 -------------</p>
+                <div>
+                    <img src="/static/img/footer/QQ.svg" alt="">
+                    <img src="/static/img/footer/weixin_icon.svg" alt="">
+                    <img src="/static/img/footer/weibo_icon.svg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/axios/axios.min.js"></script>
+<script>
+    axios.interceptors.request.use(request => {
+            if (request.method === 'post') {
+                let csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+                request.headers['X-CSRFToken'] = csrfToken
+            }
+            return request
+        }
+    )
+
+    axios.interceptors.response.use(response => {
+            return response.data
+        }
+    )
+
+    let vm = new Vue({
+        el: '.main',
+        data: {
+            SignIn_form: {
+                username: '',
+                password: '',
+                repeat_password: '',
+                verification_strings: ''
+            },
+            display_img: {
+                display: 'none',
+                width: '37.5%',
+                boxSizing: 'border-box',
+            },
+            display_p: '',
+        },
+        methods: {
+            postSignInData: function () {
+                axios.post('/api/register/', this.SignIn_form).then(res => {
+                    console.log(res)
+                    if (!res['passed']) {
+                        this.$message.error(res.msg)
+                        this.$refs[res['error_field']].focus()
+
+                    } else {
+                        this.$message.success(res.msg)
+                        setTimeout(() => {
+                            location.href = '/blog/'
+                        }, 1000)
+                    }
+                })
+            },
+            display_verification_strings: function () {
+                this.display_img.display = 'block'
+                this.display_p = 'none'
+            },
+            update_verification_strings: function (event) {
+                let time = new Date().getTime()
+                event.target.src = '/api/verification_code/?timestamp=' + time
+            }
+        }
+    })
+</script>
+</body>
+</html>

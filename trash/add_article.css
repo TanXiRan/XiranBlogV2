@@ -1,0 +1,45 @@
+#editor {
+  margin-top: 20px;
+}
+
+.el-collapse-item {
+  margin-left: 20px;
+}
+
+.el-collapse-item__header {
+  font-size: 40px;
+  color: #333333;
+}
+
+.el-collapse-item__content {
+  display: flex;
+  align-items: center;
+}
+.el-collapse-item__content > div:first-child {
+  width: 50%;
+}
+.el-collapse-item__content .article_cover img {
+  width: 200px;
+}
+.el-drawer__body {
+  position: relative;
+}
+.el-drawer__body .article_cover img {
+  width: 120px;
+}
+
+.post_infos {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  background-color: green;
+}
+
+.exit_add {
+  position: absolute;
+  right: 140px;
+  bottom: 20px;
+  background-color: red;
+}
+
+/*# sourceMappingURL=add_article.css.map */

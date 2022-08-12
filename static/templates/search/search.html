@@ -1,0 +1,84 @@
+{% extends 'index/index.html' %}
+
+{% load my_tag %}
+{% load my_filter %}
+
+{% block title %}
+    <title>博客搜索页</title>
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/search/search.css">
+{% endblock %}
+
+{% block banner %}
+{% endblock %}
+
+{% block search-box %}
+{% endblock %}
+
+{{% block main %}
+    <form action="/blog/search/">
+        <div class="search-box flexing">
+            <a href="/blog/">西然博客|搜索</a>
+            <input class="input-search" type="text" name="key" placeholder="搜索你感兴趣的文章" v-model="search_content"
+                   s_content="{{ search_content }}" @keydown.enter="do_search">
+            <button type="submit"><span><i class="fas fa-search"></i></span>搜索</button>
+        </div>
+    </form>
+    {% if search_content %}
+        <div class="search-criteria">
+            <ul class="flexing">
+                {% get_order_fields request 'most' %}
+            </ul>
+            <ul class="flexing">
+                {% get_order_fields request 'word' %}
+            </ul>
+            <ul class="flexing">
+                {% get_order_fields request 'tag' %}
+            </ul>
+        </div>
+        <div class="{{ article_qs|has_article }}">
+            <ul class="flexing">
+                {% for article in article_qs %}
+                    <li>
+                        <a href="/blog/article/{{ article.id }}/">
+                            <div class="cover"><img src="{{ article.cover.url }}" alt="">
+                            </div>
+                            <div class="article-info">
+                                <a href="/blog/article/{{ article.id }}/">
+                                    <div class="title-date">
+                                        <p class="title">{{ article.title }}</p>
+                                        <p class="date">{{ article.release_date|date:'Y-m-d' }}</p>
+                                    </div>
+                                </a>
+                                <div class="icons flexing">
+                                    <span><i class="far fa-heart"></i>{{ article.like_num }}</span>
+                                    <span><i class="far fa-star"></i>{{ artic.scan_num }}</span>
+                                    <span><i class="far fa-hand-point-up"></i>{{ article.comm_num }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if pager.get_page_list %}
+            <ul class="pager">
+                {{ pager.get_page_list|safe }}
+            </ul>
+        {% endif %}
+    {% endif %}
+    {% block pager %}
+
+    {% endblock %}
+
+{% endblock %}
+
+{% block js %}
+{% endblock %}
+
+
+{% block banner_js %}
+{% endblock %}

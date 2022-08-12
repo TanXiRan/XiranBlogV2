@@ -1,0 +1,73 @@
+{% load my_tag %}
+{% load my_filter %}
+<header class="banner">
+    {% if article_.title %}
+        <div class="article-info">
+            <div class="title flexing">
+                <div>
+                    <h2>
+                        {{ article_.title }}
+                    </h2>
+                </div>
+                {% if request.user.is_superuser %}
+                    <div class="editing">
+                        <a href="/blog/edit_article/{{ article_.id }}"><img src="/static/img/bianji.svg" alt=""
+                                                                            width="30px"></a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="category-tags flexing">
+                <div>
+                    <img src="/static/img/biaoqian.svg"
+                         alt="">{{ article_.get_category_display }}
+                </div>
+                <div>
+                    <img src="/static/img/youjiantou.svg" alt="">
+                    {% for tag in article_.tags.all %}
+                        {{ tag.name }}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="more-info flexing">
+                <div class="author-date flexing">
+                    <div>
+                        <img src="/static/img/IMG_3282.JPG" alt="" class="avatar">西然
+                    </div>
+                    <div>
+                        <img src="/static/img/shijian.svg" alt=""
+                             class="date">{{ article_.release_date|format_create_date }}
+                    </div>
+                </div>
+                <div class="likes-comments flexing">
+                    <div>
+                        <img src="/static/img/icon-4.svg" alt=""><span class="like_num">{{ article_.like_num }}</span>
+                    </div>
+                    <div>
+                        <img src="/static/img/pinglun.svg" alt=""><span class="comm_num">{{ article_.comm_num }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if pics_list %}
+        {% for pic in pics_list %}
+            <div class="article-cover dynamic_shuffle" banner_interval="0">
+                <img src="{{ article_.cover.url }}" alt="">
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if banner_qs %}
+        {% for banner in banner_qs %}
+            <div class="dynamic_shuffle" banner_interval="{{ banner_interval }}">
+                <div class="banner-pic">
+                    <img src="{{ banner.path.url|safe }}" alt="">
+                </div>
+                <div class="rotating-sentence">
+                    <p class="sentence">{{ banner.sentence }}</p>
+                    <p class="source">{{ banner.st_source }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</header>

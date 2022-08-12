@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/demo.css">
+</head>
+<body>
+<div class="lunbo">
+    <div class="content">
+        <ul id="item">
+            <li class="item">
+                <a href="#"><img src="/static/img/wallhaven-8oky1j.jpeg"></a>
+            </li>
+            <li class="item">
+                <a href="#"><img src="/static/img/高考加油-壁纸.png"></a>
+            </li>
+            <li class="item">
+                <a href="#"><img src="/static/img/森图壁纸-01.jpg"></a>
+            </li>
+            <li class="item">
+                <a href="#"><img src="/static/img/森图壁纸-06.jpg"></a>
+            </li>
+        </ul>
+        <div id="btn-left"><</div>
+        <div id="btn-right">></div>
+        <ul id="circle">
+            <li class="circle"></li>
+            <li class="circle"></li>
+            <li class="circle"></li>
+            <li class="circle"></li>
+        </ul>
+    </div>
+</div>
+</body>
+<script>
+    window.onload = function () {
+        let items = document.getElementsByClassName("item");
+        let circles = document.getElementsByClassName("circle");
+        let leftBtn = document.getElementById("btn-left");
+        let rightBtn = document.getElementById("btn-right");
+        console.log(rightBtn)
+
+        let content = document.querySelector('.content');
+        let index = 0;
+        let timer = null;
+
+//清除class
+        function clearclass() {
+            for (let i = 0; i < items.length; i++) {
+                items[i].className = "item";
+                circles[i].className = "circle";
+                circles[i].setAttribute("num", i);
+            }
+        }
+
+        /*只显示一个class*/
+        function move() {
+            clearclass();
+            items[index].className = "item active";
+            circles[index].className = "circle white";
+        }
+
+
+//点击右边按钮切换下一张图片
+        rightBtn.onclick = function () {
+            if (index < items.length - 1) {
+                index++;
+            } else {
+                index = 0;
+            }
+            move()
+        }
+
+
+        //点击左边按钮切换上一张图片
+        leftBtn.onclick = function () {
+            if (0 < index < items.length) {
+                index--;
+            } else {
+                index = items.length - 1;
+            }
+            move();
+        }
+
+
+        //开始定时器，点击右边按钮，实现轮播
+        timer = setInterval(function () {
+            rightBtn.onclick();
+        }, 1500)
+
+        //点击圆点时，跳转到对应图片
+        for (let i = 0; i < circles.length; i++) {
+            circles[i].addEventListener("click", function () {
+                index = this.getAttribute("num");
+                move();
+            })
+        }
+
+        //鼠标移入清除定时器，并开启一个三秒的定时器，使慢慢转动
+        content.onmouseover = function () {
+            clearInterval(timer);
+            timer = setInterval(function () {
+                rightBtn.onclick();
+            }, 3000)
+        }
+        //鼠标移出又开启定时器
+        content.onmouseleave = function () {
+            clearInterval(timer);
+            timer = setInterval(function () {
+                rightBtn.onclick();
+            }, 1500)
+        }
+    }
+</script>
+</html>

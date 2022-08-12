@@ -1,0 +1,140 @@
+@charset "UTF-8";
+body {
+  width: 100%;
+  height: 100vh;
+}
+body .main {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+body .main::after {
+  content: "";
+  background: url(/static/img/login_register/mio酱.jpeg);
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  min-width: 1000px;
+  z-index: -10;
+  zoom: 1;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 0;
+}
+body .back-to-site {
+  position: absolute;
+  color: var(--nav_color);
+  font-size: 20px;
+  top: 30px;
+  left: 40px;
+}
+body .back-to-site a {
+  text-align: center;
+}
+body .back-to-site img {
+  vertical-align: middle;
+  width: 22px;
+}
+body .login {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body .login .login_box {
+  width: 400px;
+  height: 600px;
+  background-color: white;
+  padding: 40px;
+  box-sizing: border-box;
+}
+body .login .login_box h2 {
+  text-align: center;
+  margin: 10px;
+  color: #323232;
+}
+body .login .login_box .SignIn_form > div {
+  display: flex;
+  flex-direction: column;
+}
+body .login .login_box .SignIn_form input {
+  height: 48px;
+  margin-bottom: 12px;
+  outline: none;
+  border: 0;
+  font-size: 16px;
+  box-sizing: border-box;
+  border-bottom: 2px solid #eaeaea;
+}
+body .login .login_box .SignIn_form input:focus {
+  border-bottom: 2px solid rebeccapurple;
+}
+body .login .login_box .SignIn_form input:last-child {
+  display: block;
+  border-radius: 100px;
+  font-weight: 700;
+  text-align: center;
+  height: auto;
+  min-height: 56px;
+  border: 2px solid #000;
+  box-sizing: border-box;
+  padding: 15px;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+body .login .login_box div.code {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+body .login .login_box div.code input {
+  width: 60%;
+  margin-bottom: 0;
+  margin-right: 10px;
+  box-sizing: border-box;
+}
+body .login .login_box div.code p {
+  width: 40%;
+  text-align: center;
+  color: white;
+  border-radius: 40px;
+  background-color: #808595;
+  font-weight: 700;
+  box-sizing: border-box;
+  padding: 13px;
+  cursor: pointer;
+}
+body .login .login_box .to_login p {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+body .login .login_box .other_login_methods {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body .login .login_box .other_login_methods p {
+  font-size: 14px;
+  color: #808595;
+  margin-bottom: 20px;
+}
+body .login .login_box .other_login_methods div > img {
+  width: 36px;
+  margin-right: 10px;
+}
+body .login .login_box .other_login_methods div > img:hover {
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=register.css.map */

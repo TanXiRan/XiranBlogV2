@@ -1,0 +1,280 @@
+.catalogue-recommendation {
+  width: 220px;
+  margin-right: 20px;
+}
+.catalogue-recommendation .cat_rec_boxer {
+  transition: all 0.3s;
+}
+.catalogue-recommendation .catalogue {
+  background-color: var(--card_bg);
+  border-radius: 5px;
+  padding: 14px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.catalogue-recommendation .catalogue .show_catalogue ~ .catalogue-body {
+  margin-top: 10px;
+  height: auto;
+  opacity: 1;
+}
+.catalogue-recommendation .catalogue .show_catalogue ~ .catalogue-body li {
+  margin-bottom: 5px;
+  transition: all 0.3s;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.catalogue-recommendation .catalogue .show_catalogue ~ .catalogue-body li:hover {
+  cursor: pointer;
+  color: var(--hover_bg);
+}
+.catalogue-recommendation .catalogue .show_catalogue ~ .catalogue-body li:last-child {
+  margin-bottom: 0;
+}
+.catalogue-recommendation .catalogue .show_catalogue ~ .catalogue-body .H1 {
+  font-weight: 500;
+  font-size: 18px;
+}
+.catalogue-recommendation .catalogue .show_catalogue ~ .catalogue-body .H2 {
+  font-weight: 400;
+  font-size: 16px;
+  margin-left: 5px;
+}
+.catalogue-recommendation .catalogue .show_catalogue ~ .catalogue-body .H3 {
+  font-weight: 300;
+  font-size: 14px;
+  margin-left: 10px;
+}
+.catalogue-recommendation .catalogue .display-catalogue {
+  align-items: center;
+}
+.catalogue-recommendation .catalogue .display-catalogue p {
+  margin-right: 10px;
+}
+.catalogue-recommendation .catalogue .catalogue-body {
+  opacity: 0;
+  height: 0;
+  transition: all 0.3s;
+}
+.catalogue-recommendation .article-recommendation {
+  padding: 14px;
+  box-sizing: border-box;
+  background-color: var(--card_bg);
+  border-radius: 5px;
+}
+.catalogue-recommendation .article-recommendation > p {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border_color1);
+}
+.catalogue-recommendation .article-recommendation ul {
+  margin-top: 10px;
+  color: #333333;
+}
+.catalogue-recommendation .article-recommendation ul > div {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border_color1);
+}
+.catalogue-recommendation .article-recommendation ul > div:first-child {
+  padding-top: 0;
+}
+.catalogue-recommendation .article-recommendation ul li .rec-cover {
+  width: 80px;
+  height: 45px;
+  margin-right: 5px;
+  overflow: hidden;
+}
+.catalogue-recommendation .article-recommendation ul li .rec-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.catalogue-recommendation .article-recommendation ul li .rec_info {
+  width: calc(100% - 85px);
+}
+.catalogue-recommendation .article-recommendation ul li .r-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.catalogue-recommendation .article-recommendation ul li .rec-release-date {
+  font-size: 14px;
+  color: gray;
+}
+
+.floating {
+  position: fixed;
+  top: 120px;
+  left: 14%;
+  width: 220px;
+  z-index: 1;
+}
+
+.middle {
+  width: calc(100% - 250px);
+}
+.middle .article {
+  margin-bottom: 10px;
+  background-color: var(--card_bg);
+}
+.middle .article #unique_content_id {
+  box-sizing: border-box;
+}
+.middle .article pre.linenums {
+  position: relative;
+}
+.middle .article pre.linenums:hover .code-copy {
+  opacity: 1;
+}
+.middle .article .code-copy {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  opacity: 0;
+  transition: all 0.3s;
+}
+.middle .article .pre-next {
+  margin-top: 10px;
+  justify-content: space-between;
+}
+.middle .article .pre-next div {
+  margin: 10px 20px;
+  font-size: 14px;
+  color: #333333;
+  cursor: pointer;
+}
+.middle .comment-textarea {
+  width: 100%;
+  position: relative;
+}
+.middle .comment-textarea textarea {
+  width: 100%;
+  resize: none;
+  background-color: var(--textarea_bg);
+  border: 1px solid var(--border_color2);
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border-radius: 5px;
+  outline: none;
+  margin: 0;
+}
+.middle .comment-textarea textarea:focus {
+  border: 1px solid var(--border_focus_color);
+}
+.middle .comment-textarea button {
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  width: 100px;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  border-radius: 5px;
+  height: 26px;
+  background-color: var(--sub_bt_bg);
+  transition: all 0.3s;
+  color: #FFFFFF;
+}
+.middle .comment-textarea button:hover {
+  cursor: pointer;
+  scale: 1.05;
+}
+.middle .comment_list {
+  margin-top: 10px;
+  width: 100%;
+}
+.middle .comment_list .comment_num {
+  width: 100%;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.middle .comment_list li {
+  margin-bottom: 10px;
+}
+.middle .comment_list li:last-child {
+  margin-bottom: 0;
+}
+.middle .comment_list li .left {
+  margin-right: 16px;
+}
+.middle .comment_list li .left img {
+  width: 40px;
+  border-radius: 5px;
+}
+.middle .comment_list li .right {
+  width: calc(100% - 60px);
+  padding: 10px;
+  background-color: var(--card_bg);
+  position: relative;
+  display: block;
+}
+.middle .comment_list li .right::after {
+  display: block;
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 16px;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: var(--weilei_color);
+}
+.middle .comment_list li .right .user-date {
+  align-items: center;
+}
+.middle .comment_list li .right .comment-user {
+  margin-right: 5px;
+}
+.middle .comment_list li .right .comment-date {
+  font-size: 12px;
+  color: #968D8B;
+}
+.middle .comment_list li .right .comment_content > p {
+  margin-top: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.middle .comment_list li .right .comment_info {
+  font-size: 14px;
+  justify-content: end;
+}
+.middle .comment_list li .right .comment_info img {
+  width: 18px;
+  vertical-align: middle;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.middle .mobile-actions {
+  display: none;
+}
+.middle .sidebar-actions {
+  position: fixed;
+  bottom: 20px;
+  right: 120px;
+}
+.middle .sidebar-actions div {
+  margin-bottom: 8px;
+}
+.middle .sidebar-actions div:last-child {
+  margin-bottom: 0;
+}
+.middle .sidebar-actions div img {
+  width: 24px;
+  cursor: pointer;
+}
+
+.editormd-html-preview {
+  background-color: var(--card_bg) !important;
+}
+
+/*# sourceMappingURL=article.css.map */

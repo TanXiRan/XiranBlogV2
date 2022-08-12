@@ -1,0 +1,100 @@
+{% extends 'user_space/user_space.html' %}
+
+{% block title %}
+    <title>发布文章</title>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/trash/add_article.css">
+{% endblock %}
+
+
+{% block main %}
+    <div class="add_article">
+        <el-form :model="addForm" ref="articleForm" label-width="75px">
+            <div class="filling_information">
+                {% block el-button %}
+                    <el-button @click="display_drawer" type="primary">完善文章信息</el-button>
+                {% endblock %}
+                <el-drawer
+                        title="完善文章信息"
+                        size="add_art_size"
+                        custom-class="add_art_drawer"
+                        :visible.sync="drawer"
+                        :direction="direction">
+                    <el-form-item label="标题" prop="title">
+                        <el-input v-model="addForm.title" placeholder="请输入文章标题" ref="title"></el-input>
+                    </el-form-item>
+                    <el-form-item label="分类" prop="category">
+                        <el-select v-model="addForm.category" filterable placeholder="选择文章分类" ref="category">
+                            {% for category in categories %}
+                                <el-option
+                                        label="{{ category.1 }}"
+                                        value="{{ category.0 }}">
+                                </el-option>
+                            {% endfor %}
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="标签" prop="tags">
+                        <el-select
+                                v-model="addForm.tags"
+                                multiple
+                                filterable
+                                allow-create
+                                default-first-option
+                                placeholder="请选择文章标签"
+                                ref="tag">
+                            {% for tag in tags %}
+                                <el-option
+                                        label="{{ tag.name }}"
+                                        value="{{ tag.id }}">
+                                </el-option>
+                            {% endfor %}
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="是否推荐" prop="recommend">
+                        <el-switch
+                                style="display: block;"
+                                v-model="addForm.recommend"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-text="推荐文章"
+                                inactive-text="普通文章">
+                        </el-switch>
+                    </el-form-item>
+                    <el-form-item label="文章封面" prop="cover" class="article_cover">
+                        <el-upload action="#" :http-request="handleFile"
+                                   :multiple="false"
+                                   :limit="1">
+                            <el-button size="small" type="primary">点击上传</el-button>
+                        </el-upload>
+                        <img :src="uploadCoverUrl" alt="" id="article_cover_id">
+                    </el-form-item>
+                    {% block exit %}
+                        <el-button @click="submitUpload" type="primary" class="post_infos">发布文章</el-button>
+                        <el-button @click="exit_add" type="danger" class="exit_add">退出编辑</el-button>
+                    {% endblock %}
+                </el-drawer>
+            </div>
+            {% block editor %}
+                <div class="article_editor" id="editor">
+                    <textarea style="display: none;" ref="content"></textarea>
+                </div>
+            {% endblock %}
+
+        </el-form>
+    </div>
+{% endblock %}
+
+
+{% block editor_js %}
+    <script>
+        $(function () {
+            editormd("editor", {
+                width: "100%",
+                height: "800px",
+                path: "/static/editor-md/lib/",
+            })
+        })
+    </script>
+{% endblock %}
